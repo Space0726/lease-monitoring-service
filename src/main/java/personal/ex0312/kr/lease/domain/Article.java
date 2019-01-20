@@ -1,12 +1,14 @@
 package personal.ex0312.kr.lease.domain;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Article {
     private String articleNo; // will be mongo unique index
     private String articleName; // 빌라
