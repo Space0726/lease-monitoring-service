@@ -26,5 +26,6 @@ public class ArticleHandler {
             })
             .collect(Collectors.toList());
 //        articleRepository.insertArticles(collect);
+        // TODO: if article were duplicated, then should notify what is difference
     }
 }
