@@ -14,4 +14,8 @@ import java.util.List;
 public class Lease {
     private boolean isMoreData;
     private List<Article> articleList;
+
+    public void setIsMoreData(boolean isMoreData) {
+        this.isMoreData = isMoreData;
+    }
 }
