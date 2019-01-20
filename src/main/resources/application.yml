@@ -9,3 +9,9 @@ feign:
 apiUrls:
   naver:
     land: https://new.land.naver.com/api
+
+spring:
+  data:
+    mongodb:
+      database: lease
+      host: localhost

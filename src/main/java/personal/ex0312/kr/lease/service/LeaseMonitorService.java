@@ -5,17 +5,33 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import personal.ex0312.kr.lease.api.NaverNewLandApiClient;
+import personal.ex0312.kr.lease.domain.Article;
 import personal.ex0312.kr.lease.domain.Lease;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
 @Slf4j
 public class LeaseMonitorService {
     private final NaverNewLandApiClient naverNewLandApiClient;
+    private final ArticleHandler articleHandler;
 
     @Scheduled(initialDelay = 5000L, fixedDelay = 60000L)
     public void collectLeasesEveryOneMinute() {
-        Lease lease = naverNewLandApiClient.findLeases(1132010800, "dateDesc", "VL:DDDGG:JWJT", "B1", 10000, 15000, 1);
-        log.info("get lease result : {}", lease);
+        int pageNumber = 0;
+        Lease lease = Lease.builder().isMoreData(true).build();
+
+        List<Article> articlesFromNaver = new ArrayList<>();
+
+        while (lease.isMoreData()) {
+            pageNumber++;
+            lease = naverNewLandApiClient.findLeases(1132010800, "dateDesc", "VL:DDDGG:JWJT", "B1", 10000, 15000, pageNumber);
+            articlesFromNaver.addAll(lease.getArticleList());
+        }
+        log.info("Getting articles from naver... The number of Articles : {}", articlesFromNaver.size());
+
+        articleHandler.processArticles(articlesFromNaver);
     }
 }
