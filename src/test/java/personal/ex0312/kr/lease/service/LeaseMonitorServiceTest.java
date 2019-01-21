@@ -32,12 +32,12 @@ public class LeaseMonitorServiceTest {
     public void testCollectLeasesEveryOneMinute() {
         // given
         List<Article> firstArticleList = Arrays.asList(
-            Article.builder().articleNo("firstArticle").build()
+            Article.builder().id("firstArticle").build()
         );
 
         List<Article> secondArticleList = Arrays.asList(
-            Article.builder().articleNo("secondArticle-1").build(),
-            Article.builder().articleNo("secondArticle-2").build()
+            Article.builder().id("secondArticle-1").build(),
+            Article.builder().id("secondArticle-2").build()
         );
 
         Lease firstLease = Lease.builder()

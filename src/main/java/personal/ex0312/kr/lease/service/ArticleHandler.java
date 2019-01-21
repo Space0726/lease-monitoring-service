@@ -16,13 +16,13 @@ public class ArticleHandler {
 
     public void processArticles(List<Article> articles) {
         Map<String, Article> existingArticles = articleRepository.findAllArticle().stream()
-            .collect(Collectors.toMap(Article::getArticleNo, article -> article));
+            .collect(Collectors.toMap(Article::getId, article -> article));
 
         List<Article> collect = articles.stream()
-            .filter(article -> !existingArticles.containsKey(article.getArticleNo()))
+            .filter(article -> !existingArticles.containsKey(article.getId()))
             .peek(article -> {
-                String price = article.getDealOrWarrantPrc();
-                article.setDealOrWarrantPrc(price.replace("억,", ""));
+                String price = article.getPrice();
+                article.setPrice(price.replace("억,", ""));
             })
             .collect(Collectors.toList());
 //        articleRepository.insertArticles(collect);
