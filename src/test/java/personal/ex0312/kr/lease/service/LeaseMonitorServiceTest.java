@@ -12,6 +12,8 @@ import personal.ex0312.kr.lease.domain.Lease;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -27,17 +29,19 @@ public class LeaseMonitorServiceTest {
     private NaverNewLandApiClient naverNewLandApiClient;
     @Mock
     private ArticleHandler articleHandler;
+    @Mock
+    private ArticlePolishService articlePolishService;
 
     @Test
-    public void testCollectLeasesEveryOneMinute() {
+    public void testCollectLeasesEveryOneMinute_whenGettingArticles_thenTheyShouldBePolished() {
         // given
         List<Article> firstArticleList = Arrays.asList(
-            Article.builder().id("firstArticle").build()
+            Article.builder().id("firstArticle").price("1억5,000").build()
         );
 
         List<Article> secondArticleList = Arrays.asList(
-            Article.builder().id("secondArticle-1").build(),
-            Article.builder().id("secondArticle-2").build()
+            Article.builder().id("secondArticle-1").price("1억2,000").build(),
+            Article.builder().id("secondArticle-2").price("7,000").build()
         );
 
         Lease firstLease = Lease.builder()
@@ -53,6 +57,9 @@ public class LeaseMonitorServiceTest {
             .thenReturn(firstLease)
             .thenReturn(secondLease);
 
+        when(articlePolishService.polishArticles(anyList()))
+            .thenReturn(Stream.concat(firstArticleList.stream(), secondArticleList.stream()).collect(Collectors.toList()));
+
         ArgumentCaptor<List<Article>> argumentCaptor = ArgumentCaptor.forClass(List.class);
 
         // when
@@ -60,6 +67,7 @@ public class LeaseMonitorServiceTest {
 
         // then
         verify(naverNewLandApiClient, times(2)).findLeases(anyLong(), anyString(), anyString(), anyString(), anyInt(), anyInt(), anyInt());
+        verify(articlePolishService, times(1)).polishArticles(anyList());
         verify(articleHandler, times(1)).processArticles(argumentCaptor.capture());
         assertThat(argumentCaptor.getValue()).isNotNull();
         assertThat(argumentCaptor.getValue().size()).isEqualTo(3);
