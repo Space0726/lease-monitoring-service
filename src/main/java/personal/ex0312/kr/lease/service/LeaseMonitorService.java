@@ -17,6 +17,7 @@ import java.util.List;
 public class LeaseMonitorService {
     private final NaverNewLandApiClient naverNewLandApiClient;
     private final ArticleHandler articleHandler;
+    private final ArticlePolishService articlePolishService;
 
     @Scheduled(initialDelay = 5000L, fixedDelay = 60000L)
     public void collectLeasesEveryOneMinute() {
@@ -33,6 +34,7 @@ public class LeaseMonitorService {
         }
         log.info("The total number of Articles : {}", articlesFromNaver.size());
 
-        articleHandler.processArticles(articlesFromNaver);
+        List<Article> polishedArticles = articlePolishService.polishArticles(articlesFromNaver);
+        articleHandler.processArticles(polishedArticles);
     }
 }

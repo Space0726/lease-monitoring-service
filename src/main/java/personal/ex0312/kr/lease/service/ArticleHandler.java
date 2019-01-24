@@ -19,13 +19,13 @@ public class ArticleHandler {
             .collect(Collectors.toMap(Article::getId, article -> article));
 
         List<Article> collect = articles.stream()
-            .filter(article -> !existingArticles.containsKey(article.getId()))
-            .peek(article -> {
-                String price = article.getPrice();
-                article.setPrice(price.replace("억,", ""));
-            })
+            .filter(article -> !isNewArticle(existingArticles, article))
             .collect(Collectors.toList());
-//        articleRepository.insertArticles(collect);
+        articleRepository.insertArticles(collect);
         // TODO: if article were duplicated, then should notify what is difference
+    }
+
+    private boolean isNewArticle(Map<String, Article> existingArticles, Article article) {
+        return existingArticles.containsKey(article.getId());
     }
 }
