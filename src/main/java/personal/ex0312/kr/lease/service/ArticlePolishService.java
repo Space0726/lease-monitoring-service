@@ -11,8 +11,9 @@ public class ArticlePolishService {
     List<Article> polishArticles(List<Article> articlesFromNaver) {
         return articlesFromNaver.stream()
             .peek(article -> {
-                String price = article.getPrice().replaceAll("억,", "");
+                String price = article.getPrice().replaceAll("[억,]", "");
                 article.setPrice(price);
+                System.out.println();
             })
             .collect(Collectors.toList());
     }
