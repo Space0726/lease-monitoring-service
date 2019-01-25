@@ -30,7 +30,7 @@ public class ArticleHandler {
 
         if (!willBeInsertedArticles.isEmpty()) {
             articleRepository.insertArticles(willBeInsertedArticles);
-            emailService.sendEmail("신규주택 : " + LocalDateTime.now().toString(), newlyArticleLinks.toString());
+            emailService.sendEmailWithHtmlFormat("신규주택 : " + LocalDateTime.now().toString(), newlyArticleLinks.toString());
         }
 
         StringBuilder updatedArticleLinks = new StringBuilder();
@@ -44,7 +44,7 @@ public class ArticleHandler {
 
         if (!willBeUpdatedArticles.isEmpty()) {
             articleRepository.updateArticles(willBeUpdatedArticles);
-            emailService.sendEmail("기존주택 : " + LocalDateTime.now().toString(), updatedArticleLinks.toString());
+            emailService.sendEmailWithHtmlFormat("기존주택 : " + LocalDateTime.now().toString(), updatedArticleLinks.toString());
         }
     }
 
