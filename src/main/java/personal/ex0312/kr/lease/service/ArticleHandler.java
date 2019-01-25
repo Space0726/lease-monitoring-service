@@ -28,9 +28,11 @@ public class ArticleHandler {
             .filter(article -> !isNewArticle(existingArticles, article))
             .peek(article -> links.append(article.toString()).append("\n"))
             .collect(Collectors.toList());
-        articleRepository.insertArticles(collect);
 
-        emailService.sendEmail("신규주택 : " + LocalDateTime.now().toString(), links.toString());
+        if (!collect.isEmpty()) {
+            articleRepository.insertArticles(collect);
+            emailService.sendEmail("신규주택 : " + LocalDateTime.now().toString(), links.toString());
+        }
 
         // TODO: if article were duplicated, then should notify what is difference
     }
