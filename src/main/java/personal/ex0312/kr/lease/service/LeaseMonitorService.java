@@ -32,7 +32,6 @@ public class LeaseMonitorService {
             pageNumber++;
             lease = naverNewLandApiClient.findLeases(1132010800, "dateDesc", "VL:DDDGG:JWJT", "B1", 10000, 15000, pageNumber);
             articlesFromNaver.addAll(lease.getArticleList());
-            log.info("Getting lease from naver: {}", lease);
         }
         log.info("The total number of Articles : {}", articlesFromNaver.size());
 

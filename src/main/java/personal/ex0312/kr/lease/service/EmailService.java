@@ -27,7 +27,7 @@ public class EmailService {
         Message message = createMessage(subject, content);
 
         gmail.users().messages().send("example0312@gmail.com", message).execute();
-        log.info("Email has sent. {}", message);
+        log.info("Email has sent successfully.");
     }
 
     private Message createMessage(String subject, String content) throws MessagingException, IOException {
