@@ -8,6 +8,7 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.gmail.Gmail;
 import com.google.api.services.gmail.GmailScopes;
 import org.springframework.context.annotation.Bean;
@@ -42,6 +43,7 @@ public class GmailConfig {
 
         GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
             netHttpTransport, JacksonFactory.getDefaultInstance(), clientSecrets, Collections.singletonList(GmailScopes.MAIL_GOOGLE_COM))
+            .setDataStoreFactory(new FileDataStoreFactory(new java.io.File("tokens")))
             .setAccessType("offline")
             .build();
         LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8888).build();
