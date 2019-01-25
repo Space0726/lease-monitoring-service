@@ -20,4 +20,8 @@ public class ArticleRepository {
     public void insertArticles(Collection<Article> articles) {
         mongoTemplate.insertAll(articles);
     }
+
+    public void updateArticles(List<Article> articles) {
+        articles.parallelStream().forEach(mongoTemplate::save);
+    }
 }

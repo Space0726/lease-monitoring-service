@@ -22,19 +22,34 @@ public class ArticleHandler {
         Map<String, Article> existingArticles = articleRepository.findAllArticle().stream()
             .collect(Collectors.toMap(Article::getArticleId, article -> article));
 
-        StringBuilder links = new StringBuilder();
-
-        List<Article> collect = articles.stream()
+        StringBuilder newlyArticleLinks = new StringBuilder();
+        List<Article> willBeInsertedArticles = articles.stream()
             .filter(article -> isNewArticle(existingArticles, article))
-            .peek(article -> links.append(article.toString()).append("\n"))
+            .peek(article -> newlyArticleLinks.append(article.toString()).append("\n"))
             .collect(Collectors.toList());
 
-        if (!collect.isEmpty()) {
-            articleRepository.insertArticles(collect);
-            emailService.sendEmail("신규주택 : " + LocalDateTime.now().toString(), links.toString());
+        if (!willBeInsertedArticles.isEmpty()) {
+            articleRepository.insertArticles(willBeInsertedArticles);
+            emailService.sendEmail("신규주택 : " + LocalDateTime.now().toString(), newlyArticleLinks.toString());
         }
 
-        // TODO: if article were duplicated, then should notify what is difference
+        StringBuilder updatedArticleLinks = new StringBuilder();
+        List<Article> willBeUpdatedArticles = articles.stream()
+            .filter(article -> !isNewArticle(existingArticles, article))
+            .filter(article -> !isSamePrice(existingArticles.get(article.getArticleId()), article))
+            .peek(article -> {
+                updatedArticleLinks.append(article.toString()).append("\n");
+            })
+            .collect(Collectors.toList());
+
+        if (!willBeUpdatedArticles.isEmpty()) {
+            articleRepository.updateArticles(willBeUpdatedArticles);
+            emailService.sendEmail("기존주택 : " + LocalDateTime.now().toString(), updatedArticleLinks.toString());
+        }
+    }
+
+    private boolean isSamePrice(Article existingArticle, Article mayBeUpdatedArticle) {
+        return existingArticle.getPrice().equals(mayBeUpdatedArticle.getPrice());
     }
 
     private boolean isNewArticle(Map<String, Article> existingArticles, Article article) {
