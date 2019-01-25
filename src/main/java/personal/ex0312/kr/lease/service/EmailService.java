@@ -3,9 +3,12 @@ package personal.ex0312.kr.lease.service;
 import com.google.api.client.util.Base64;
 import com.google.api.services.gmail.Gmail;
 import com.google.api.services.gmail.model.Message;
+import com.google.common.base.Charsets;
+import com.google.common.io.Resources;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import personal.ex0312.kr.lease.domain.Article;
 
 import javax.mail.Message.RecipientType;
 import javax.mail.MessagingException;
@@ -16,19 +19,46 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 @AllArgsConstructor
 @Slf4j
 public class EmailService {
+    private final String LEASE_INFO_HTML = "email_content_leases_info.html";
+    private final String ROW_HTML = "email_content_row.html";
+
     private final Gmail gmail;
     private final InternetAddress internetAddress;
 
-    public void sendEmailWithHtmlFormat(String subject, String htmlRawStr) throws IOException, MessagingException {
-        Message message = createMessage(subject, htmlRawStr);
+    public void sendArticles(List<Article> articles) throws IOException, MessagingException {
+        StringBuilder rows = new StringBuilder();
+        AtomicInteger atomicInteger = new AtomicInteger(0);
 
+        articles.forEach(article -> {
+            String rowHtml = getEmailTemplate(ROW_HTML)
+                .replaceAll("##KIND##", article.getKind())
+                .replaceAll("##SUPPLYING_AREA##", String.valueOf(article.getSupplyingArea()))
+                .replaceAll("##EXCLUSIVE_USING_AREA##", String.valueOf(article.getExclusiveUsingArea()))
+                .replaceAll("##DIRECTION##", article.getDirection())
+                .replaceAll("##FLOOR_INFO##", article.getFloorInfo())
+                .replaceAll("##PRICE##", article.getPrice())
+                .replaceAll("##REALTOR_NAME##", article.getRealtorName())
+                .replaceAll("##DETAIL_LINK##", article.getDetailLink())
+                .replaceAll("##COLOR##", atomicInteger.getAndIncrement() % 2 == 0 ? "white" : "#C5FFFF");
+
+            rows.append(rowHtml);
+        });
+
+        String leaseInfoTemplate = getEmailTemplate(LEASE_INFO_HTML)
+            .replaceAll("##ROWS##", rows.toString());
+
+        Message message = createMessage("매물정보 " + LocalDateTime.now().toString(), leaseInfoTemplate);
         gmail.users().messages().send("example0312@gmail.com", message).execute();
+
         log.info("Email has sent successfully.");
     }
 
@@ -54,5 +84,14 @@ public class EmailService {
         mimeMessage.writeTo(buffer);
         byte[] bytes = buffer.toByteArray();
         return Base64.encodeBase64URLSafeString(bytes);
+    }
+
+    private String getEmailTemplate(String templateFileName) {
+        try {
+            return Resources.toString(Resources.getResource(templateFileName), Charsets.UTF_8);
+        } catch (IOException e) {
+            log.error("An error occurred on loading email template from {}", templateFileName, e);
+            throw new RuntimeException();
+        }
     }
 }
