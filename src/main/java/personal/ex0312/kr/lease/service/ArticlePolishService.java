@@ -13,7 +13,6 @@ public class ArticlePolishService {
             .peek(article -> {
                 String price = article.getPrice().replaceAll("[억,]", "");
                 article.setPrice(price);
-                System.out.println();
             })
             .collect(Collectors.toList());
     }
