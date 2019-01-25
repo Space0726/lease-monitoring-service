@@ -10,6 +10,8 @@ import personal.ex0312.kr.lease.api.NaverNewLandApiClient;
 import personal.ex0312.kr.lease.domain.Article;
 import personal.ex0312.kr.lease.domain.Lease;
 
+import javax.mail.MessagingException;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,6 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.anyList;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -33,15 +36,15 @@ public class LeaseMonitorServiceTest {
     private ArticlePolishService articlePolishService;
 
     @Test
-    public void testCollectLeasesEveryOneMinute_whenGettingArticles_thenTheyShouldBePolished() {
+    public void testCollectLeasesEveryOneMinute_whenGettingArticles_thenTheyShouldBePolished() throws IOException, MessagingException {
         // given
         List<Article> firstArticleList = Arrays.asList(
-            Article.builder().id("firstArticle").price("1억5,000").build()
+            Article.builder().articleId("firstArticle").price("1억5,000").build()
         );
 
         List<Article> secondArticleList = Arrays.asList(
-            Article.builder().id("secondArticle-1").price("1억2,000").build(),
-            Article.builder().id("secondArticle-2").price("7,000").build()
+            Article.builder().articleId("secondArticle-1").price("1억2,000").build(),
+            Article.builder().articleId("secondArticle-2").price("7,000").build()
         );
 
         Lease firstLease = Lease.builder()

@@ -8,6 +8,8 @@ import personal.ex0312.kr.lease.api.NaverNewLandApiClient;
 import personal.ex0312.kr.lease.domain.Article;
 import personal.ex0312.kr.lease.domain.Lease;
 
+import javax.mail.MessagingException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +22,7 @@ public class LeaseMonitorService {
     private final ArticlePolishService articlePolishService;
 
     @Scheduled(initialDelay = 5000L, fixedDelay = 60000L)
-    public void collectLeasesEveryOneMinute() {
+    public void collectLeasesEveryOneMinute() throws IOException, MessagingException {
         int pageNumber = 0;
         Lease lease = Lease.builder().isMoreData(true).build();
 

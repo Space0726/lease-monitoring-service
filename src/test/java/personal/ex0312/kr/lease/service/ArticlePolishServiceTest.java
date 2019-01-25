@@ -15,8 +15,8 @@ public class ArticlePolishServiceTest {
     public void testPolishArticles() {
         // given
         List<Article> articles = Arrays.asList(
-            Article.builder().id("1").price("1억2,000").build(),
-            Article.builder().id("2").price("7,000").build()
+            Article.builder().articleId("1").price("1억2,000").build(),
+            Article.builder().articleId("2").price("7,000").build()
         );
 
         // when

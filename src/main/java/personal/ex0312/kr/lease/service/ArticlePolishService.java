@@ -3,6 +3,7 @@ package personal.ex0312.kr.lease.service;
 import org.springframework.stereotype.Service;
 import personal.ex0312.kr.lease.domain.Article;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,6 +14,7 @@ public class ArticlePolishService {
             .peek(article -> {
                 String price = article.getPrice().replaceAll("[억,]", "");
                 article.setPrice(price);
+                article.setRegisteredAt(LocalDateTime.now());
             })
             .collect(Collectors.toList());
     }

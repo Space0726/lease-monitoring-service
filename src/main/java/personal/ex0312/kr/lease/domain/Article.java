@@ -6,13 +6,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class Article {
     @JsonProperty(value = "articleNo")
-    private String id; // will be mongo unique index
+    private String articleId; // will be mongo unique index
     @JsonProperty(value = "articleName")
     private String kind; // 빌라
     @JsonProperty(value = "area1")
@@ -26,4 +28,5 @@ public class Article {
     private String realtorName; // 세기부동산
     @JsonProperty(value = "dealOrWarrantPrc")
     private String price; // "1억5,000"
+    private LocalDateTime registeredAt;
 }
