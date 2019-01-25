@@ -25,7 +25,7 @@ public class ArticleHandler {
         StringBuilder links = new StringBuilder();
 
         List<Article> collect = articles.stream()
-            .filter(article -> !isNewArticle(existingArticles, article))
+            .filter(article -> isNewArticle(existingArticles, article))
             .peek(article -> links.append(article.toString()).append("\n"))
             .collect(Collectors.toList());
 
@@ -38,6 +38,6 @@ public class ArticleHandler {
     }
 
     private boolean isNewArticle(Map<String, Article> existingArticles, Article article) {
-        return existingArticles.containsKey(article.getArticleId());
+        return !existingArticles.containsKey(article.getArticleId());
     }
 }
