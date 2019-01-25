@@ -33,11 +33,11 @@ public class EmailService {
     }
 
     private Message createMessage(String subject, String htmlRawStr) throws MessagingException, IOException {
-        String encodedEmail = createEncodedEmail(subject, htmlRawStr);
+        String encodedEmail = createEncodedRawString(subject, htmlRawStr);
         return new Message().setRaw(encodedEmail);
     }
 
-    private String createEncodedEmail(String subject, String htmlRawStr) throws MessagingException, IOException {
+    private String createEncodedRawString(String subject, String htmlRawStr) throws MessagingException, IOException {
         MimeBodyPart bpHtml = new MimeBodyPart();
         bpHtml.setContent(htmlRawStr, "text/html; charset=utf-8");
 
