@@ -22,6 +22,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -46,13 +47,13 @@ public class EmailService {
             }
             String rowHtml = getEmailTemplate(ROW_HTML)
                 .replaceAll("##TRADE_TYPE##", article.getTradeType())
-                .replaceAll("##KIND##", article.getBuildingType())
-                .replaceAll("##EXCLUSIVE_USING_AREA##", String.valueOf((int) (article.getExclusiveUsingArea() / 3.305785)))
-                .replaceAll("##DIRECTION##", article.getDirection())
-                .replaceAll("##FLOOR_INFO##", article.getFloorInfo())
+                .replaceAll("##KIND##", Optional.ofNullable(article.getBuildingType()).orElse(""))
+                .replaceAll("##EXCLUSIVE_USING_AREA##", Optional.ofNullable(String.valueOf((int) (article.getExclusiveUsingArea() / 3.305785))).orElse(""))
+                .replaceAll("##DIRECTION##", Optional.ofNullable(article.getDirection()).orElse(""))
+                .replaceAll("##FLOOR_INFO##", Optional.ofNullable(article.getFloorInfo()).orElse(""))
                 .replaceAll("##PRICE##", price)
-                .replaceAll("##MOBILE_DETAIL_LINK##", article.getMobileDetailLink())
-                .replaceAll("##PC_DETAIL_LINK##", article.getPcDetailLink())
+                .replaceAll("##MOBILE_DETAIL_LINK##", Optional.ofNullable(article.getMobileDetailLink()).orElse(""))
+                .replaceAll("##PC_DETAIL_LINK##", Optional.ofNullable(article.getPcDetailLink()).orElse(""))
                 .replaceAll("##COLOR##", atomicInteger.getAndIncrement() % 2 == 0 ? "white" : "#C5FFFF");
 
             rows.append(rowHtml);
