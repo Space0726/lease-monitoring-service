@@ -27,7 +27,7 @@ public class Article {
     private String pcDetailLink;
     private String realtorName; // 세기부동산
     @JsonProperty(value = "dealOrWarrantPrc")
-    private String warrantPrice; // "1억5,000" or "2억500"
+    private String warrantPrice; // "1억5,000" or "2억500" or "5억"
     @JsonProperty(value = "rentPrc")
     private String monthlyPrice; // 30
     @JsonProperty(value = "tradeTypeName")

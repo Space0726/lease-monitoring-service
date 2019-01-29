@@ -30,10 +30,14 @@ public class ArticlePolishService {
         String commaRemovedPrice = unpolishedPrice.replaceAll("[,]", "");
         String[] splitPrice = commaRemovedPrice.split("[억]");
         int price = 0;
-        if (splitPrice.length == 1) {
-            price += Integer.parseInt(splitPrice[0]);
-        } else {
+        if (splitPrice.length != 1) {
             price += Integer.parseInt(splitPrice[0]) * 10000 + Integer.parseInt(splitPrice[1]);
+        } else {
+            if (unpolishedPrice.contains("억")) {
+                price += Integer.parseInt(splitPrice[0]) * 10000;
+            } else {
+                price += Integer.parseInt(splitPrice[0]);
+            }
         }
         return String.valueOf(price);
     }
