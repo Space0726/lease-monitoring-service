@@ -41,7 +41,7 @@ public class EmailService {
 
         articles.forEach(article -> {
             String price = article.getWarrantPrice();
-            if (StringUtils.isEmpty(article.getMonthlyPrice())) {
+            if (!StringUtils.isEmpty(article.getMonthlyPrice())) {
                 price += "/" + article.getMonthlyPrice();
             }
             String rowHtml = getEmailTemplate(ROW_HTML)
