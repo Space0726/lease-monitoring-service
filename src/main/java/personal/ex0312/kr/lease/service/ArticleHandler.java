@@ -85,12 +85,14 @@ public class ArticleHandler {
                     )
                 );
 
-                try {
-                    emailService.sendArticles(job.getEmailAddress(), articles);
-                    log.info("Sent email successfully. recipient : {}, articles : {}", job.getEmailAddress(), articles);
-                } catch (IOException | MessagingException e) {
-                    e.printStackTrace();
-                    log.error("Failed to send e-mail. e-mail address : {}, articles : {}", job.getEmailAddress(), articles);
+                if (!articles.isEmpty()) {
+                    try {
+                        emailService.sendArticles(job.getEmailAddress(), articles);
+                        log.info("Sent email successfully. recipient : {}, articles : {}", job.getEmailAddress(), articles);
+                    } catch (IOException | MessagingException e) {
+                        e.printStackTrace();
+                        log.error("Failed to send e-mail. e-mail address : {}, articles : {}", job.getEmailAddress(), articles);
+                    }
                 }
             });
         }
