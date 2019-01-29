@@ -8,6 +8,7 @@ import com.google.common.io.Resources;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import personal.ex0312.kr.lease.domain.Article;
 
 import javax.mail.Message.RecipientType;
@@ -39,13 +40,17 @@ public class EmailService {
         AtomicInteger atomicInteger = new AtomicInteger(0);
 
         articles.forEach(article -> {
+            String price = article.getWarrantPrice();
+            if (StringUtils.isEmpty(article.getMonthlyPrice())) {
+                price += "/" + article.getMonthlyPrice();
+            }
             String rowHtml = getEmailTemplate(ROW_HTML)
+                .replaceAll("##TRADE_TYPE##", article.getTradeType())
                 .replaceAll("##KIND##", article.getBuildingType())
-                .replaceAll("##SUPPLYING_AREA##", String.valueOf(article.getSupplyingArea()))
                 .replaceAll("##EXCLUSIVE_USING_AREA##", String.valueOf(article.getExclusiveUsingArea()))
                 .replaceAll("##DIRECTION##", article.getDirection())
                 .replaceAll("##FLOOR_INFO##", article.getFloorInfo())
-                .replaceAll("##PRICE##", article.getWarrantPrice())
+                .replaceAll("##PRICE##", price)
                 .replaceAll("##REALTOR_NAME##", article.getRealtorName())
                 .replaceAll("##DETAIL_LINK##", article.getDetailLink())
                 .replaceAll("##COLOR##", atomicInteger.getAndIncrement() % 2 == 0 ? "white" : "#C5FFFF");
