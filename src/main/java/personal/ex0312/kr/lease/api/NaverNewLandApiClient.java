@@ -8,7 +8,7 @@ import personal.ex0312.kr.lease.domain.Lease;
 @FeignClient(name = "naverNewLand", url = "${apiUrls.naver.land}")
 public interface NaverNewLandApiClient {
     @GetMapping("/articles")
-    Lease findLeases(@RequestParam("cortarNo") long areaIdentifier,
+    Lease findLeases(@RequestParam("cortarNo") String areaIdentifier,
                      @RequestParam("order") String order,
                      @RequestParam("realEstateType") String buildingType,
                      @RequestParam("tradeType") String tradeType,

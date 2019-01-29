@@ -24,7 +24,7 @@ public class ArticleHandler {
     private final EmailService emailService;
     private final ArticlePolishService articlePolishService;
 
-    public void processArticles(List<MonitoringJob> allJobs, Map<Long, List<Article>> articlesByAreaId) {
+    public void processArticles(List<MonitoringJob> allJobs, Map<String, List<Article>> articlesByAreaId) {
         articlePolishService.polishArticles(articlesByAreaId);
 
         Map<String, Article> existingArticles = articleRepository.findAllArticle().stream()

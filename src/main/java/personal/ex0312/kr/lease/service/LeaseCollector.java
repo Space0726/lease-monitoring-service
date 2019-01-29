@@ -18,10 +18,10 @@ public class LeaseCollector {
     private final ArticleHandler articleHandler;
 
     void collectLeases(List<MonitoringJob> allJobs) {
-        Set<Long> allAreaIdentifiers = new HashSet<>();
+        Set<String> allAreaIdentifiers = new HashSet<>();
         allJobs.stream().map(MonitoringJob::getAreaIdentifiers).forEach(allAreaIdentifiers::addAll);
 
-        Map<Long, List<Article>> articlesByAreaId = new HashMap<>();
+        Map<String, List<Article>> articlesByAreaId = new HashMap<>();
 
         allAreaIdentifiers.forEach(areaId -> {
             int pageNumber = 0;

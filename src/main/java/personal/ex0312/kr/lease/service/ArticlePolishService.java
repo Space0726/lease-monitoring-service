@@ -10,7 +10,7 @@ import java.util.Map;
 @Service
 public class ArticlePolishService {
 
-    void polishArticles(Map<Long, List<Article>> articlesByAreaId) {
+    void polishArticles(Map<String, List<Article>> articlesByAreaId) {
         String mobileDetailLinkUri = "https://m.land.naver.com/article/info/";
         LocalDateTime now = LocalDateTime.now();
 

@@ -13,7 +13,7 @@ import java.util.Set;
 @Builder
 public class MonitoringJob {
     private String emailAddress;
-    private Set<Long> areaIdentifiers;
+    private Set<String> areaIdentifiers;
     private int minimumPrice;
     private int maximumPrice;
 }
