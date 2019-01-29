@@ -14,5 +14,4 @@ public class MonitoringJob {
     private long areaIdentifier;
     private int minimumPrice;
     private int maximumPrice;
-    private boolean parking;
 }
