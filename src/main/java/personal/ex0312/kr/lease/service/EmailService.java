@@ -62,7 +62,7 @@ public class EmailService {
             .replaceAll("##ROWS##", rows.toString());
 
         Message message = createMessage(recipientEmailAddress, "매물정보 " + LocalDateTime.now().toString(), leaseInfoTemplate);
-        gmail.users().messages().send(recipientEmailAddress, message).execute();
+        gmail.users().messages().send("me", message).execute();
 
         log.info("Email has sent successfully.");
     }
