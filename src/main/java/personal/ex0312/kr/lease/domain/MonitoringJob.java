@@ -14,5 +14,5 @@ public class MonitoringJob {
     private long areaIdentifier;
     private int minimumPrice;
     private int maximumPrice;
-    private String tradeType;
+    private boolean parking;
 }
