@@ -35,12 +35,12 @@ public class LeaseMonitorServiceTest {
     public void testCollectLeasesEveryOneMinute_whenGettingArticles_thenTheyShouldBePolished() throws IOException, MessagingException {
         // given
         List<Article> firstArticleList = Arrays.asList(
-            Article.builder().articleId("firstArticle").price("1억5,000").build()
+            Article.builder().articleId("firstArticle").warrantPrice("1억5,000").build()
         );
 
         List<Article> secondArticleList = Arrays.asList(
-            Article.builder().articleId("secondArticle-1").price("1억2,000").build(),
-            Article.builder().articleId("secondArticle-2").price("7,000").build()
+            Article.builder().articleId("secondArticle-1").warrantPrice("1억2,000").build(),
+            Article.builder().articleId("secondArticle-2").warrantPrice("7,000").build()
         );
 
         Lease firstLease = Lease.builder()

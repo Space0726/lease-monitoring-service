@@ -40,12 +40,12 @@ public class EmailService {
 
         articles.forEach(article -> {
             String rowHtml = getEmailTemplate(ROW_HTML)
-                .replaceAll("##KIND##", article.getKind())
+                .replaceAll("##KIND##", article.getBuildingType())
                 .replaceAll("##SUPPLYING_AREA##", String.valueOf(article.getSupplyingArea()))
                 .replaceAll("##EXCLUSIVE_USING_AREA##", String.valueOf(article.getExclusiveUsingArea()))
                 .replaceAll("##DIRECTION##", article.getDirection())
                 .replaceAll("##FLOOR_INFO##", article.getFloorInfo())
-                .replaceAll("##PRICE##", article.getPrice())
+                .replaceAll("##PRICE##", article.getWarrantPrice())
                 .replaceAll("##REALTOR_NAME##", article.getRealtorName())
                 .replaceAll("##DETAIL_LINK##", article.getDetailLink())
                 .replaceAll("##COLOR##", atomicInteger.getAndIncrement() % 2 == 0 ? "white" : "#C5FFFF");

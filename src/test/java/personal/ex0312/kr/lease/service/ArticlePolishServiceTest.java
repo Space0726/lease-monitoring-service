@@ -15,8 +15,8 @@ public class ArticlePolishServiceTest {
     public void testPolishArticles() {
         // given
         List<Article> articles = Arrays.asList(
-            Article.builder().articleId("1").price("1억2,000").build(),
-            Article.builder().articleId("2").price("7,000").build()
+            Article.builder().articleId("1").warrantPrice("1억2,000").build(),
+            Article.builder().articleId("2").warrantPrice("7,000").build()
         );
 
         // when
@@ -25,7 +25,7 @@ public class ArticlePolishServiceTest {
         // then
         assertThat(polishedArticles).isNotNull();
         assertThat(polishedArticles.size()).isEqualTo(2);
-        assertThat(polishedArticles.get(0).getPrice()).isEqualTo("12000");
-        assertThat(polishedArticles.get(1).getPrice()).isEqualTo("7000");
+        assertThat(polishedArticles.get(0).getWarrantPrice()).isEqualTo("12000");
+        assertThat(polishedArticles.get(1).getWarrantPrice()).isEqualTo("7000");
     }
 }

@@ -48,7 +48,7 @@ public class ArticleHandler {
     }
 
     private boolean isSamePrice(Article existingArticle, Article mayBeUpdatedArticle) {
-        return existingArticle.getPrice().equals(mayBeUpdatedArticle.getPrice());
+        return existingArticle.getWarrantPrice().equals(mayBeUpdatedArticle.getWarrantPrice());
     }
 
     private boolean isNewArticle(Map<String, Article> existingArticles, Article article) {
