@@ -9,9 +9,11 @@ import java.util.Map;
 
 @Service
 public class ArticlePolishService {
+    private final String mobileDetailLinkUri = "https://m.land.naver.com/article/info/";
+    private final String pcDetailLinkUri = "https://new.land.naver.com/houses?articleNo=";
 
     void polishArticles(Map<String, List<Article>> articlesByAreaId) {
-        String mobileDetailLinkUri = "https://m.land.naver.com/article/info/";
+
         LocalDateTime now = LocalDateTime.now();
 
         articlesByAreaId.forEach((key, value) -> value.forEach(article -> {
@@ -19,7 +21,8 @@ public class ArticlePolishService {
 
             article.setWarrantPrice(getPolishedPrice(unpolishedPrice));
             article.setRegisteredAt(now);
-            article.setDetailLink(mobileDetailLinkUri + article.getArticleId());
+            article.setMobileDetailLink(mobileDetailLinkUri + article.getArticleId());
+            article.setPcDetailLink(pcDetailLinkUri + article.getArticleId());
         }));
     }
 

@@ -51,8 +51,8 @@ public class EmailService {
                 .replaceAll("##DIRECTION##", article.getDirection())
                 .replaceAll("##FLOOR_INFO##", article.getFloorInfo())
                 .replaceAll("##PRICE##", price)
-                .replaceAll("##REALTOR_NAME##", article.getRealtorName())
-                .replaceAll("##DETAIL_LINK##", article.getDetailLink())
+                .replaceAll("##MOBILE_DETAIL_LINK##", article.getMobileDetailLink())
+                .replaceAll("##PC_DETAIL_LINK##", article.getPcDetailLink())
                 .replaceAll("##COLOR##", atomicInteger.getAndIncrement() % 2 == 0 ? "white" : "#C5FFFF");
 
             rows.append(rowHtml);

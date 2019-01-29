@@ -23,8 +23,8 @@ public class Article {
     private int exclusiveUsingArea; // 전용면적
     private String direction; // 남향
     private String floorInfo; // 5/5
-    @JsonProperty(value = "cpPcArticleUrl")
-    private String detailLink; // 상세정보 링크
+    private String mobileDetailLink;
+    private String pcDetailLink;
     private String realtorName; // 세기부동산
     @JsonProperty(value = "dealOrWarrantPrc")
     private String warrantPrice; // "1억5,000" or "2억500"
