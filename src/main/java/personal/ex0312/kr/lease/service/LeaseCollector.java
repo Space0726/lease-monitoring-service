@@ -35,6 +35,7 @@ public class LeaseCollector {
                 gettingArticles.addAll(lease.getArticleList());
             }
             articlesByAreaId.put(areaId, gettingArticles);
+            log.info("Getting articles by areaId... areaId : {}, articlesSize : {}", areaId, gettingArticles.size());
         });
         articleHandler.processArticles(allJobs, articlesByAreaId);
     }
