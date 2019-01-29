@@ -47,7 +47,7 @@ public class EmailService {
             String rowHtml = getEmailTemplate(ROW_HTML)
                 .replaceAll("##TRADE_TYPE##", article.getTradeType())
                 .replaceAll("##KIND##", article.getBuildingType())
-                .replaceAll("##EXCLUSIVE_USING_AREA##", String.valueOf(article.getExclusiveUsingArea()))
+                .replaceAll("##EXCLUSIVE_USING_AREA##", String.valueOf((int) (article.getExclusiveUsingArea() / 3.305785)))
                 .replaceAll("##DIRECTION##", article.getDirection())
                 .replaceAll("##FLOOR_INFO##", article.getFloorInfo())
                 .replaceAll("##PRICE##", price)

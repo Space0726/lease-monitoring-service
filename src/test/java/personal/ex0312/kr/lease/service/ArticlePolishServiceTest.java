@@ -14,6 +14,12 @@ public class ArticlePolishServiceTest {
     private final ArticlePolishService articlePolishService = new ArticlePolishService();
 
     @Test
+    public void test() {
+        int a = (int) (49 / 3.305785);
+        System.out.println(a);
+    }
+
+    @Test
     public void testPolishArticles() {
         // given
         List<Article> articles = Arrays.asList(
