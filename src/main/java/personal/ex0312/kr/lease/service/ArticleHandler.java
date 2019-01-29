@@ -57,8 +57,18 @@ public class ArticleHandler {
             articleRepository.insertArticles(mergeListsFromMap(willBeUpdatedArticles));
         }
 
-        Map<String, List<Article>> willBeSentToMailArticles = Stream.concat(willBeInsertedArticles.entrySet().stream(), willBeUpdatedArticles.entrySet().stream())
-            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        Map<String, List<Article>> willBeSentToMailArticles = new HashMap<>(willBeInsertedArticles);
+        willBeUpdatedArticles
+            .forEach((areaId, articles) ->
+                willBeSentToMailArticles.merge(
+                    areaId,
+                    articles,
+                    (insertedArticles, updatedArticles) -> {
+                        return Stream.concat(insertedArticles.stream(), updatedArticles.stream())
+                            .collect(Collectors.toList());
+                    }
+                )
+            );
 
         if (!willBeSentToMailArticles.isEmpty()) {
             allJobs.forEach(job -> {
