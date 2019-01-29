@@ -34,7 +34,7 @@ public class EmailService {
     private final Gmail gmail;
     private final InternetAddress internetAddress;
 
-    public void sendArticles(List<Article> articles) throws IOException, MessagingException {
+    public void sendArticles(String recipientEmailAddress, List<Article> articles) throws IOException, MessagingException {
         StringBuilder rows = new StringBuilder();
         AtomicInteger atomicInteger = new AtomicInteger(0);
 
@@ -57,7 +57,7 @@ public class EmailService {
             .replaceAll("##ROWS##", rows.toString());
 
         Message message = createMessage("매물정보 " + LocalDateTime.now().toString(), leaseInfoTemplate);
-        gmail.users().messages().send("example0312@gmail.com", message).execute();
+        gmail.users().messages().send(recipientEmailAddress, message).execute();
 
         log.info("Email has sent successfully.");
     }

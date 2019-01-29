@@ -12,7 +12,5 @@ public interface NaverNewLandApiClient {
                      @RequestParam("order") String order,
                      @RequestParam("realEstateType") String buildingType,
                      @RequestParam("tradeType") String tradeType,
-                     @RequestParam("priceMin") int minimumPrice,
-                     @RequestParam("priceMax") int maximumPrice,
                      @RequestParam("page") int pageNumber);
 }

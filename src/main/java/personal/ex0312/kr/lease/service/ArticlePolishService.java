@@ -5,17 +5,33 @@ import personal.ex0312.kr.lease.domain.Article;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 @Service
 public class ArticlePolishService {
-    List<Article> polishArticles(List<Article> articlesFromNaver) {
-        return articlesFromNaver.stream()
-            .peek(article -> {
-                String price = article.getWarrantPrice().replaceAll("[억,]", "");
-                article.setWarrantPrice(price);
-                article.setRegisteredAt(LocalDateTime.now());
-            })
-            .collect(Collectors.toList());
+
+    void polishArticles(Map<Long, List<Article>> articlesByAreaId) {
+        String mobileDetailLinkUri = "https://m.land.naver.com/article/info/";
+        LocalDateTime now = LocalDateTime.now();
+
+        articlesByAreaId.forEach((key, value) -> value.forEach(article -> {
+            String unpolishedPrice = article.getWarrantPrice();
+
+            article.setWarrantPrice(getPolishedPrice(unpolishedPrice));
+            article.setRegisteredAt(now);
+            article.setDetailLink(mobileDetailLinkUri + article.getArticleId());
+        }));
+    }
+
+    private String getPolishedPrice(String unpolishedPrice) {
+        String commaRemovedPrice = unpolishedPrice.replaceAll("[,]", "");
+        String[] splitPrice = commaRemovedPrice.split("[억]");
+        int price = 0;
+        if (splitPrice.length == 1) {
+            price += Integer.parseInt(splitPrice[0]);
+        } else {
+            price += Integer.parseInt(splitPrice[0]) * 10000 + Integer.parseInt(splitPrice[1]);
+        }
+        return String.valueOf(price);
     }
 }
