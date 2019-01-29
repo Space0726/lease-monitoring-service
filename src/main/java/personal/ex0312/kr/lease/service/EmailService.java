@@ -33,7 +33,7 @@ public class EmailService {
     private final String ROW_HTML = "email_content_row.html";
 
     private final Gmail gmail;
-    private final InternetAddress internetAddress;
+    private final InternetAddress senderInternetAddress;
 
     public void sendArticles(String recipientEmailAddress, List<Article> articles) throws IOException, MessagingException {
         StringBuilder rows = new StringBuilder();
@@ -61,18 +61,18 @@ public class EmailService {
         String leaseInfoTemplate = getEmailTemplate(LEASE_INFO_HTML)
             .replaceAll("##ROWS##", rows.toString());
 
-        Message message = createMessage("매물정보 " + LocalDateTime.now().toString(), leaseInfoTemplate);
+        Message message = createMessage(recipientEmailAddress, "매물정보 " + LocalDateTime.now().toString(), leaseInfoTemplate);
         gmail.users().messages().send(recipientEmailAddress, message).execute();
 
         log.info("Email has sent successfully.");
     }
 
-    private Message createMessage(String subject, String htmlRawStr) throws MessagingException, IOException {
-        String encodedEmail = createEncodedRawString(subject, htmlRawStr);
+    private Message createMessage(String recipientEmailAddress, String subject, String htmlRawStr) throws MessagingException, IOException {
+        String encodedEmail = createEncodedRawString(recipientEmailAddress, subject, htmlRawStr);
         return new Message().setRaw(encodedEmail);
     }
 
-    private String createEncodedRawString(String subject, String htmlRawStr) throws MessagingException, IOException {
+    private String createEncodedRawString(String recipientEmailAddress, String subject, String htmlRawStr) throws MessagingException, IOException {
         MimeBodyPart bpHtml = new MimeBodyPart();
         bpHtml.setContent(htmlRawStr, "text/html; charset=utf-8");
 
@@ -80,8 +80,8 @@ public class EmailService {
         mimeMultipart.addBodyPart(bpHtml);
 
         MimeMessage mimeMessage = new MimeMessage(Session.getDefaultInstance(new Properties(), null));
-        mimeMessage.setFrom(internetAddress);
-        mimeMessage.addRecipient(RecipientType.TO, internetAddress);
+        mimeMessage.setFrom(senderInternetAddress);
+        mimeMessage.addRecipient(RecipientType.TO, new InternetAddress(recipientEmailAddress));
         mimeMessage.setSubject(subject);
         mimeMessage.setContent(mimeMultipart);
 
