@@ -54,7 +54,7 @@ public class ArticleHandler {
         });
 
         if (!willBeUpdatedArticles.isEmpty()) {
-            articleRepository.insertArticles(mergeListsFromMap(willBeUpdatedArticles));
+            articleRepository.updateArticles(mergeListsFromMap(willBeUpdatedArticles));
         }
 
         Map<String, List<Article>> willBeSentToMailArticles = new HashMap<>(willBeInsertedArticles);
