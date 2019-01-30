@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 public class Article {
     @JsonProperty(value = "articleNo")
     private String articleId; // will be mongo unique index
+    private String areaIdentifier;
     @JsonProperty(value = "articleName")
     private String buildingType; // 빌라
     @JsonProperty(value = "area1")
