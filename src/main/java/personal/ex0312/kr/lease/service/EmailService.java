@@ -36,7 +36,7 @@ public class EmailService {
     private final Gmail gmail;
     private final InternetAddress senderInternetAddress;
 
-    public void sendArticles(String recipientEmailAddress, List<Article> articles) throws IOException, MessagingException {
+    void sendArticles(String recipientEmailAddress, List<Article> articles) throws IOException, MessagingException {
         if (articles.isEmpty()) {
             return;
         }

@@ -22,7 +22,7 @@ public class ArticleHandler {
     private final ArticleRepository articleRepository;
     private final EmailService emailService;
 
-    public void processArticles(List<MonitoringJob> allJobs, List<Article> collectedArticles) {
+    void processArticles(List<MonitoringJob> allJobs, List<Article> collectedArticles) {
         Map<String, Article> existingArticles = articleRepository.findAllArticle().stream()
             .collect(Collectors.toMap(Article::getArticleId, article -> article));
 
