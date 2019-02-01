@@ -37,6 +37,9 @@ public class EmailService {
     private final InternetAddress senderInternetAddress;
 
     public void sendArticles(String recipientEmailAddress, List<Article> articles) throws IOException, MessagingException {
+        if (articles.isEmpty()) {
+            return;
+        }
         StringBuilder rows = new StringBuilder();
         AtomicInteger atomicInteger = new AtomicInteger(0);
 
@@ -65,7 +68,7 @@ public class EmailService {
         Message message = createMessage(recipientEmailAddress, "매물정보 " + LocalDateTime.now().toString(), leaseInfoTemplate);
         gmail.users().messages().send("me", message).execute();
 
-        log.info("Email has sent successfully.");
+        log.info("Sent email successfully. recipient : {}, articles : {}", recipientEmailAddress, articles);
     }
 
     private Message createMessage(String recipientEmailAddress, String subject, String htmlRawStr) throws MessagingException, IOException {
