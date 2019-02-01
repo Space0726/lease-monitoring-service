@@ -34,9 +34,15 @@ public class ArticlePolishServiceTest {
 
         // then
         assertThat(articles.size()).isEqualTo(4);
+
         assertThat(articles.get(0).getWarrantPrice()).isEqualTo("12000");
         assertThat(articles.get(1).getWarrantPrice()).isEqualTo("7000");
         assertThat(articles.get(2).getWarrantPrice()).isEqualTo("20070");
         assertThat(articles.get(3).getWarrantPrice()).isEqualTo("50000");
+
+        assertThat(articles.get(0).getAreaIdentifier()).isEqualTo(areaIdentifier);
+        assertThat(articles.get(0).getRegisteredAt()).isNotNull();
+        assertThat(articles.get(0).getMobileDetailLink()).isNotNull();
+        assertThat(articles.get(0).getPcDetailLink()).isNotNull();
     }
 }
