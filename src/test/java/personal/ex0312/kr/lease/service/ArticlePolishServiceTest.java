@@ -4,9 +4,7 @@ import org.junit.Test;
 import personal.ex0312.kr.lease.domain.Article;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -22,23 +20,23 @@ public class ArticlePolishServiceTest {
     @Test
     public void testPolishArticles() {
         // given
+        String areaIdentifier = "1040203412";
+
         List<Article> articles = Arrays.asList(
             Article.builder().articleId("1").warrantPrice("1억2,000").build(),
             Article.builder().articleId("2").warrantPrice("7,000").build(),
             Article.builder().articleId("2").warrantPrice("2억70").build(),
             Article.builder().articleId("2").warrantPrice("5억").build()
         );
-        Map<String, List<Article>> articlesByAreaId = new HashMap<>();
-        articlesByAreaId.put("areaId", articles);
 
         // when
-        articlePolishService.polishArticles(articlesByAreaId);
+        articlePolishService.polishArticles(articles, areaIdentifier);
 
         // then
-        assertThat(articlesByAreaId.get("areaId").size()).isEqualTo(4);
-        assertThat(articlesByAreaId.get("areaId").get(0).getWarrantPrice()).isEqualTo("12000");
-        assertThat(articlesByAreaId.get("areaId").get(1).getWarrantPrice()).isEqualTo("7000");
-        assertThat(articlesByAreaId.get("areaId").get(2).getWarrantPrice()).isEqualTo("20070");
-        assertThat(articlesByAreaId.get("areaId").get(3).getWarrantPrice()).isEqualTo("50000");
+        assertThat(articles.size()).isEqualTo(4);
+        assertThat(articles.get(0).getWarrantPrice()).isEqualTo("12000");
+        assertThat(articles.get(1).getWarrantPrice()).isEqualTo("7000");
+        assertThat(articles.get(2).getWarrantPrice()).isEqualTo("20070");
+        assertThat(articles.get(3).getWarrantPrice()).isEqualTo("50000");
     }
 }
