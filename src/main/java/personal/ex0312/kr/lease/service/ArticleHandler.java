@@ -68,7 +68,10 @@ public class ArticleHandler {
     }
 
     private boolean isMetTradeType(MonitoringJob job, String tradeType) {
-        return job.getTradeType().toString().equals(tradeType);
+        return job.getTradeTypes().stream()
+            .map(Enum::toString)
+            .collect(Collectors.toSet())
+            .contains(tradeType);
     }
 
     private boolean isMetPriceCondition(MonitoringJob job, Article article) {

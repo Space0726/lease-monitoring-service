@@ -16,5 +16,5 @@ public class MonitoringJob {
     private Set<String> areaIdentifiers;
     private int minimumPrice;
     private int maximumPrice;
-    private TradeType tradeType;
+    private Set<TradeType> tradeTypes;
 }
