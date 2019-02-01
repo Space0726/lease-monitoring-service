@@ -26,31 +26,18 @@ public class ArticleHandler {
         Map<String, Article> existingArticles = articleRepository.findAllArticle().stream()
             .collect(Collectors.toMap(Article::getArticleId, article -> article));
 
-        List<Article> willBeInsertedArticles = collectedArticles.stream()
-            .filter(article -> isNewArticle(existingArticles, article))
-            .collect(Collectors.toList());
+        List<Article> newlyArticles = processNewlyArticles(existingArticles, collectedArticles);
 
-        if (!willBeInsertedArticles.isEmpty()) {
-            articleRepository.insertArticles(willBeInsertedArticles);
-        }
+        List<Article> updatedArticles = processDuplicatedArticles(existingArticles, collectedArticles);
 
-        List<Article> willBeUpdatedArticles = collectedArticles.stream()
-            .filter(article -> !isNewArticle(existingArticles, article))
-            .filter(article -> !isSamePrice(existingArticles.get(article.getArticleId()), article))
-            .collect(Collectors.toList());
-
-        if (!willBeUpdatedArticles.isEmpty()) {
-            articleRepository.updateArticles(willBeUpdatedArticles);
-        }
-
-        List<Article> willBeSentToMailArticles = Stream.concat(willBeInsertedArticles.stream(), willBeUpdatedArticles.stream())
+        List<Article> mayBeSentToMailArticles = Stream.concat(newlyArticles.stream(), updatedArticles.stream())
             .collect(Collectors.toList());
 
         allJobs.forEach(job -> {
             List<Article> articles = new ArrayList<>();
 
             job.getAreaIdentifiers().forEach(areaId -> articles.addAll(
-                willBeSentToMailArticles.stream()
+                mayBeSentToMailArticles.stream()
                     .filter(article -> areaId.equals(article.getAreaIdentifier()))
                     .filter(article -> isMetPriceCondition(job, article))
                     .filter(article -> isMetTradeType(job, article.getTradeType()))
@@ -65,6 +52,29 @@ public class ArticleHandler {
                 log.error("Failed to send e-mail. e-mail address : {}, articles : {}", job.getEmailAddress(), articles);
             }
         });
+    }
+
+    List<Article> processDuplicatedArticles(Map<String, Article> existingArticles, List<Article> collectedArticles) {
+        List<Article> willBeUpdatedArticles = collectedArticles.stream()
+            .filter(article -> !isNewArticle(existingArticles, article))
+            .filter(article -> !isSamePrice(existingArticles.get(article.getArticleId()), article))
+            .collect(Collectors.toList());
+
+        if (!willBeUpdatedArticles.isEmpty()) {
+            articleRepository.updateArticles(willBeUpdatedArticles);
+        }
+        return willBeUpdatedArticles;
+    }
+
+    List<Article> processNewlyArticles(Map<String, Article> existingArticles, List<Article> collectedArticles) {
+        List<Article> willBeInsertedArticles = collectedArticles.stream()
+            .filter(article -> isNewArticle(existingArticles, article))
+            .collect(Collectors.toList());
+
+        if (!willBeInsertedArticles.isEmpty()) {
+            articleRepository.insertArticles(willBeInsertedArticles);
+        }
+        return willBeInsertedArticles;
     }
 
     private boolean isMetTradeType(MonitoringJob job, String tradeType) {
